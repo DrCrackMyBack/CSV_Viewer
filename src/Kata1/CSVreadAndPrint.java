@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class CSVreadAndPrint {
 	public static void printCsv(String filePath, int numberOfOutputLines) {
-		ArrayList<String> nonSeparatedLines = CSVreadAndPrint.readLines(filePath);
-		ArrayList<String[]> separatedValuesPerLine = CSVreadAndPrint.splitLines(nonSeparatedLines);
+		ArrayList<String> nonSeparatedLines = readLines(filePath);
+		ArrayList<String[]> separatedValuesPerLine = splitLines(nonSeparatedLines);
 		int[] widths = Widthsgetter.getWidthPerColoumn(separatedValuesPerLine);
 		ConsoleOutput.print(separatedValuesPerLine, widths, numberOfOutputLines);
 	}
