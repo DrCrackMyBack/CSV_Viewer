@@ -7,40 +7,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 public class CSVreadAndPrint {
-	/** Prints the CSV file.
+	/**
+	 * Prints the CSV file.
 	 * 
 	 * @param filepath the path of the CSV file.
-	 * @param separatedValuesPerLine a List of String Arrays. Each Array represents
-	 *                               one line from the table. The values of each line, previously
-	 *                               separated by a delimiter in the CSV file, are
-	 *                               now separated.
-	 * @param widths                 array which represents the width each column of
-	 *                               the table should have from left to right. The
-	 *                               value is derived from the item that needs the
-	 *                               most space (has the most characters) in each
-	 *                               column.
+	 * @param number   of Outputlines defines how many lines of the table are shown
+	 *                 per page.
+	 * @delimiter delimiter that separates the values in the CSV file.
+	 * 
 	 */
-	public static void printCsv(String filePath, int numberOfOutputLines) {
-		List<String[]> separatedValuesPerLine = readLinesAndSeperate(filePath);
+	public static void printCsv(String filePath, int numberOfOutputLines, String delimiter) {
+		List<String[]> separatedValuesPerLine = readAndSeparateLines(filePath, delimiter);
 		int[] widths = Widthsgetter.getWidthPerColoumn(separatedValuesPerLine);
 		ConsoleOutput.print(separatedValuesPerLine, widths, numberOfOutputLines);
 	}
 
-	private static List<String[]> readLinesAndSeperate(String filePath) {
-		Stream<String> rows;
+	private static List<String[]> readAndSeparateLines(String filePath, String delimiter) {
+
 		try {
-			rows = Files.lines(Paths.get(filePath));
-			List<String[]> seseparatedValuesPerLine = rows
-					.map(x->x.split(";"))
-					.collect(Collectors.toList());
+			Stream<String> rows = Files.lines(Paths.get(filePath));
+			List<String[]> separatedValuesPerLine = rows.map(x -> x.split(delimiter)).collect(Collectors.toList());
 			rows.close();
-			return seseparatedValuesPerLine;
+			return separatedValuesPerLine;
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		return null;	
+		return null;
 	}
 }
-	
