@@ -20,7 +20,7 @@ public class CSVreadAndPrint {
 	 */
 	public static void printCsv(String filePath, int numberOfOutputLines, String delimiter) {
 		List<String> unseparatedLines = readLines(filePath);
-		
+		List<String[]> separatedHeader = createHeader (unseparatedLines, delimiter);
 		List<String[]> separatedValuesPerLine = separateLines(unseparatedLines, delimiter);
 		int[] widths = Widthsgetter.getWidthPerColoumn(separatedValuesPerLine);
 		ConsoleOutput.print(separatedValuesPerLine, widths, numberOfOutputLines);
@@ -53,6 +53,7 @@ public class CSVreadAndPrint {
 
 	private static List<String[]> separateLines(List<String> unseparatedLines, String delimiter) {
 			List<String[]> separatedValuesPerLine = unseparatedLines.stream()
+					.skip(1)
 					.map(x -> x.split(delimiter))
 					.collect(Collectors.toList());
 			return separatedValuesPerLine;
