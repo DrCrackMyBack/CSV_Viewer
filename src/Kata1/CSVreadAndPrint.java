@@ -22,7 +22,6 @@ public class CSVreadAndPrint {
 		List<String> unseparatedLines = readLines(filePath);
 		List<String[]> separatedHeader = separateHeader(unseparatedLines, delimiter);
 		List<String[]> separatedLinesWithoutHeader = separateLinesWithoutHeader(unseparatedLines, delimiter);
-
 		int[] widths = Widthsgetter.getWidthPerColoumn(separatedLinesWithoutHeader, separatedHeader);
 		ConsoleOutput.print(separatedHeader,separatedLinesWithoutHeader, widths, numberOfOutputLines);
 	}
@@ -43,8 +42,8 @@ public class CSVreadAndPrint {
 
 		List<String> manipulatedLines = manipulateHeader(unseparatedLines);
 		List<String[]> separatedHeader = manipulatedLines
-				.stream().
-				limit(1)
+				.stream()
+				.limit(1)
 				.map(x -> x.split(delimiter))
 				.collect(Collectors.toList());
 
@@ -55,7 +54,6 @@ public class CSVreadAndPrint {
 		List<String> manipulatedLines = manipulateLines(unseparatedLines);
 		List<String[]> separatedValuesPerLine = manipulatedLines
 				.stream()
-				.skip(1)
 				.map(x -> x.split(delimiter))
 				.collect(Collectors.toList());
 		return separatedValuesPerLine;
