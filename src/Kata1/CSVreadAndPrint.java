@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,7 +41,7 @@ public class CSVreadAndPrint {
 
 	private static List<String[]> separateHeader(List<String> unseparatedLines, String delimiter) {
 
-		List<String> manipulatedLines = manipulateHeader(unseparatedLines);
+		List<String> manipulatedLines = manipulateHeader(unseparatedLines, delimiter);
 		List<String[]> separatedHeader = manipulatedLines
 				.stream()
 				.limit(1)
@@ -51,7 +52,7 @@ public class CSVreadAndPrint {
 	}
 
 	private static List<String[]> separateLinesWithoutHeader(List<String> unseparatedLines, String delimiter) {
-		List<String> manipulatedLines = manipulateLines(unseparatedLines);
+		List<String> manipulatedLines = manipulateLines(unseparatedLines, delimiter);
 		List<String[]> separatedValuesPerLine = manipulatedLines
 				.stream()
 				.map(x -> x.split(delimiter))
@@ -59,22 +60,24 @@ public class CSVreadAndPrint {
 		return separatedValuesPerLine;
 	}
 
-	private static List<String> manipulateHeader(List<String> unseparatedLines) {
+	private static List<String> manipulateHeader(List<String> unseparatedLines, String delimiter) {
 		List<String> manipulatedHeader = unseparatedLines.stream()
 				.limit(1)
-				.map(x -> "No.;" + x)
+				.map(x -> "No." + delimiter + x)
 				.collect(Collectors.toList());
 		return manipulatedHeader;
 	}
 	
-	private static List<String> manipulateLines(List<String> unseparatedLines){
-		int row = 1;
+	private static List<String> manipulateLines(List<String> unseparatedLines, String delimiter){
+		AtomicInteger row = new AtomicInteger(1);
 		List<String> manipulatedLines = unseparatedLines
 				.stream()
 				.skip(1)
 				.map(x -> {
-					String rowString = Integer.toString(row);
-					String modifiedRow = rowString + ".;" + x;
+					int rowInt = row.intValue();
+					String rowString = Integer.toString(rowInt);
+					String modifiedRow = rowString + "."+ delimiter + x;
+					row.addAndGet(1);
 					return modifiedRow;		})
 				.collect(Collectors.toList());
 		return manipulatedLines;
