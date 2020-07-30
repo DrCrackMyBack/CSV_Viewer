@@ -20,7 +20,6 @@ public class ConsoleOutput {
 	
 		String[]header = separatedHeader.get(0);
 		final ArrayList<Page> pages = createPages(separatedLinesWithoutHeader, numberOfLinesPerPage);
-
 		int currentPageIndex = 0;
 		int lastPageIndex = pages.size()-1;
 		boolean isRunning = true;
