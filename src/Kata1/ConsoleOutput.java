@@ -16,13 +16,10 @@ public class ConsoleOutput {
 	private final static String EXIT = "X";
 	private final static String LAST_PAGE = "L";
 
-	public static void print(List<String[]> separatedValuesPerLine, int[] widths, int numberOfLinesPerPage) {
-		List<String[]> linesWithoutHeader = separatedValuesPerLine
-				.stream()
-				.skip(1)
-				.collect(Collectors.toList());
-		String[]header = separatedValuesPerLine.get(0);
-		final ArrayList<Page> pages = createPages(linesWithoutHeader, numberOfLinesPerPage);
+	public static void print(List<String[]> separatedHeader, List<String[]> separatedLinesWithoutHeader, int[] widths, int numberOfLinesPerPage) {
+	
+		String[]header = separatedHeader.get(0);
+		final ArrayList<Page> pages = createPages(separatedLinesWithoutHeader, numberOfLinesPerPage);
 
 		int currentPageIndex = 0;
 		int lastPageIndex = pages.size()-1;
