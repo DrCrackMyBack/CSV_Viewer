@@ -31,8 +31,9 @@ public class ConsoleOutput {
 				printHeader(header, widths);
 			}
 			currentPage.printPage(widths);
-			
-			String userInput = askUserForAction(numberOfLinesPerPage);
+			int numberOfPages = pages.size();
+			int currentPageNumber = currentPageIndex + 1;
+			String userInput = askUserForAction(numberOfLinesPerPage, currentPageNumber, numberOfPages);
 			if (userInput.equals(NEXT_PAGE)) {
 				currentPageIndex++;
 			} else if (userInput.equals(PREVIOUS_PAGE)) {
@@ -81,8 +82,9 @@ public class ConsoleOutput {
 		}
 	}
 
-	private static String askUserForAction(int numberOfOutputLines) {
+	private static String askUserForAction(int numberOfOutputLines, int currentPage, int totalPages) {
 		System.out.println("");
+		System.out.println("Page "+ currentPage +" of " + totalPages);
 		System.out.println("N(ext page, P(revious page, F(irst page, L(ast page, eX(it");
 		BufferedReader userInputReader = new BufferedReader(new InputStreamReader(System.in));
 		try {
