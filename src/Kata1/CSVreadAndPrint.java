@@ -1,42 +1,38 @@
 package Kata1;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CSVreadAndPrint {
-	public static void printCsv(String filePath, int numberOfOutputLines) {
-		ArrayList<String> nonSeparatedLines = readLines(filePath);
-		ArrayList<String[]> separatedValuesPerLine = splitLines(nonSeparatedLines);
+	/**
+	 * Prints the CSV file.
+	 * 
+	 * @param filepath the path of the CSV file.
+	 * @param number   of Outputlines defines how many lines of the table are shown
+	 *                 per page.
+	 * @delimiter delimiter that separates the values in the CSV file.
+	 * 
+	 */
+	public static void printCsv(String filePath, int numberOfOutputLines, String delimiter) {
+		List<String[]> separatedValuesPerLine = readAndSeparateLines(filePath, delimiter);
 		int[] widths = Widthsgetter.getWidthPerColoumn(separatedValuesPerLine);
 		ConsoleOutput.print(separatedValuesPerLine, widths, numberOfOutputLines);
 	}
 
-	private static ArrayList<String> readLines(String filePath) {
-		String file = filePath;
-		ArrayList<String> nonSeparatedLines = new ArrayList<>();
-		try (BufferedReader lineReader = new BufferedReader(new FileReader(file))) {
-			String line;
-			while ((line = lineReader.readLine()) != null) {
-				nonSeparatedLines.add(line);
-			}
+	private static List<String[]> readAndSeparateLines(String filePath, String delimiter) {
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		try {
+			Stream<String> rows = Files.lines(Paths.get(filePath));
+			List<String[]> separatedValuesPerLine = rows.map(x -> x.split(delimiter)).collect(Collectors.toList());
+			rows.close();
+			return separatedValuesPerLine;
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
-		return nonSeparatedLines;
-	}
-
-	private static ArrayList<String[]> splitLines(ArrayList<String> nonSeparated) {
-		ArrayList<String[]> sepValuesPerLine = new ArrayList<String[]>();
-		for (String nonSepValue : nonSeparated) {
-			String[] sepValues = nonSepValue.split(";");
-			sepValuesPerLine.add(sepValues);
-		}
-		return sepValuesPerLine;
+		return null;
 	}
 }

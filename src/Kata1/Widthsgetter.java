@@ -1,10 +1,11 @@
 package Kata1;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Widthsgetter {
 	
-	public static int [] getWidthPerColoumn(ArrayList<String[]> separatedValuesPerLine) {
+	public static int [] getWidthPerColoumn(List<String[]> separatedValuesPerLine) {
 		int widths [] = new int [separatedValuesPerLine.get(0).length];
 		
 		for (String[] array : separatedValuesPerLine) {

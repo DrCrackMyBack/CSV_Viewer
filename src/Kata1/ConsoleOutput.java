@@ -16,7 +16,7 @@ public class ConsoleOutput {
 	private final static String EXIT = "X";
 	private final static String LAST_PAGE = "L";
 
-	public static void print(ArrayList<String[]> separatedValuesPerLine, int[] widths, int numberOfLinesPerPage) {
+	public static void print(List<String[]> separatedValuesPerLine, int[] widths, int numberOfLinesPerPage) {
 		List<String[]> linesWithoutHeader = separatedValuesPerLine
 				.stream()
 				.skip(1)
@@ -54,7 +54,7 @@ public class ConsoleOutput {
 	private static ArrayList<Page> createPages(List<String[]> separatedValuesPerLine, int numberOfLinesPerPage) {
 		final int numberOfPages = (int) Math.ceil(separatedValuesPerLine.size() / numberOfLinesPerPage);
 		ArrayList<Page> pages = new ArrayList<>(numberOfPages);
-
+	
 		for (int currentLineIndex = 0; currentLineIndex < separatedValuesPerLine.size();) {
 			ArrayList<String[]> linesForOnePage = new ArrayList<>(numberOfLinesPerPage);
 
