@@ -13,6 +13,8 @@ public class ConsoleOutput {
 	private final static String FIRST_PAGE = "F";
 	private final static String EXIT = "X";
 	private final static String LAST_PAGE = "L";
+	
+	
 
 	public static void print(List<String[]> separatedHeader, List<String[]> separatedLinesWithoutHeader, int[] widths, int numberOfLinesPerPage) {
 	
@@ -21,7 +23,7 @@ public class ConsoleOutput {
 		int currentPageIndex = 0;
 		int lastPageIndex = pages.size()-1;
 		boolean isRunning = true;
-
+		boolean isJumping = false;
 		while (isRunning) {
 	
 			Page currentPage = pages.get(currentPageIndex);
@@ -31,7 +33,9 @@ public class ConsoleOutput {
 			currentPage.printPage(widths);
 			int numberOfPages = pages.size();
 			int currentPageNumber = currentPageIndex + 1;
-			String userInput = askUserForAction(numberOfLinesPerPage, currentPageNumber, numberOfPages);
+			String userInput = askUserForAction(currentPageNumber, numberOfPages);
+			isJumping = numberOrNot(userInput);
+			
 			if (userInput.equals(NEXT_PAGE)) {
 				currentPageIndex++;
 			} else if (userInput.equals(PREVIOUS_PAGE)) {
@@ -42,6 +46,9 @@ public class ConsoleOutput {
 				break;
 			} else if (userInput.equals(LAST_PAGE)) {
 				currentPageIndex=lastPageIndex;
+			} else if (isJumping) {
+				currentPageIndex = Integer.parseInt(userInput) - 1;
+				isJumping = false;
 			}
 		}
 	}
@@ -80,18 +87,28 @@ public class ConsoleOutput {
 		}
 	}
 
-	private static String askUserForAction(int numberOfOutputLines, int currentPage, int totalPages) {
+	private static String askUserForAction(int currentPage, int totalPages) {
 		System.out.println("");
 		System.out.println("Page "+ currentPage +" of " + totalPages);
-		System.out.println("N(ext page, P(revious page, F(irst page, L(ast page, eX(it");
+		System.out.println("N(ext page, P(revious page, F(irst page, L(ast page, J(ump to page, S)ort, eX(it");
 		BufferedReader userInputReader = new BufferedReader(new InputStreamReader(System.in));
 		try {
-			return userInputReader.readLine();
+			String userInput = userInputReader.readLine();
+			return userInput;
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 			// Logger.log(LoggingLevel.CRITICAL, e.getMessage());
 		}
 		return "";
+	}
+	
+	private static boolean numberOrNot(String userInput){
+	    try{
+	        Integer.parseInt(userInput);
+	    } catch(NumberFormatException ex) {
+	        return false;
+	    }
+	    return true;
 	}
 }

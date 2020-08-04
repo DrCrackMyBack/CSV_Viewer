@@ -69,15 +69,15 @@ public class CSVreadAndPrint {
 	}
 	
 	private static List<String> manipulateLines(List<String> unseparatedLines, String delimiter){
-		AtomicInteger row = new AtomicInteger(1);
+		AtomicInteger rowCount = new AtomicInteger(1);
 		List<String> manipulatedLines = unseparatedLines
 				.stream()
 				.skip(1)
 				.map(x -> {
-					int rowInt = row.intValue();
+					int rowInt = rowCount.intValue();
 					String rowString = Integer.toString(rowInt);
 					String modifiedRow = rowString + "."+ delimiter + x;
-					row.addAndGet(1);
+					rowCount.addAndGet(1);
 					return modifiedRow;		})
 				.collect(Collectors.toList());
 		return manipulatedLines;
