@@ -13,17 +13,16 @@ public class ConsoleOutput {
 	private final static String FIRST_PAGE = "F";
 	private final static String EXIT = "X";
 	private final static String LAST_PAGE = "L";
+	private final static String SORTING = "S";
 	
-	
-
 	public static void print(List<String[]> separatedHeader, List<String[]> separatedLinesWithoutHeader, int[] widths, int numberOfLinesPerPage) {
 	
 		String[]header = separatedHeader.get(0);
-		final ArrayList<Page> pages = createPages(separatedLinesWithoutHeader, numberOfLinesPerPage);
+		ArrayList<Page> pages = createPages(separatedLinesWithoutHeader, numberOfLinesPerPage);
 		int currentPageIndex = 0;
 		int lastPageIndex = pages.size()-1;
 		boolean isRunning = true;
-		boolean isJumping = false;
+		boolean userisJumpingToPage = false;
 		while (isRunning) {
 	
 			Page currentPage = pages.get(currentPageIndex);
@@ -34,7 +33,7 @@ public class ConsoleOutput {
 			int numberOfPages = pages.size();
 			int currentPageNumber = currentPageIndex + 1;
 			String userInput = askUserForAction(currentPageNumber, numberOfPages);
-			isJumping = numberOrNot(userInput);
+			userisJumpingToPage = numberOrNot(userInput);
 			
 			if (userInput.equals(NEXT_PAGE)) {
 				currentPageIndex++;
@@ -46,9 +45,19 @@ public class ConsoleOutput {
 				break;
 			} else if (userInput.equals(LAST_PAGE)) {
 				currentPageIndex=lastPageIndex;
-			} else if (isJumping) {
+			} else if (userisJumpingToPage) {
 				currentPageIndex = Integer.parseInt(userInput) - 1;
-				isJumping = false;
+				userisJumpingToPage = false;
+			} else if (userInput.equals(SORTING)) {
+				System.out.println("Please enter column name to sort on:");
+				BufferedReader userInputReader = new BufferedReader(new InputStreamReader(System.in));
+				try {
+					String columnToSortBy = userInputReader.readLine();
+					List<String[]> sortedLinesWithoutHeader = Sorter.sortLines(separatedLinesWithoutHeader, columnToSortBy, header);
+					pages = createPages(sortedLinesWithoutHeader, numberOfLinesPerPage);
+				} catch (IOException e) {
+					System.out.println("userInput for sorting error");
+				}
 			}
 		}
 	}

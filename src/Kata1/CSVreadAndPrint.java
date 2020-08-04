@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ public class CSVreadAndPrint {
 	 * @param filepath            the path of the CSV file.
 	 * @param numberofOutputlines defines how many lines of the table are shown per
 	 *                            page.
-	 * @delimiter delimiter that separates the values in the CSV file.
+	 * @param delimiter			  delimiter that separates the values in the CSV file.
 	 * 
 	 */
 	public static void printCsv(String filePath, int numberOfOutputLines, String delimiter) {
@@ -47,7 +48,6 @@ public class CSVreadAndPrint {
 				.limit(1)
 				.map(x -> x.split(delimiter))
 				.collect(Collectors.toList());
-
 		return separatedHeader;
 	}
 
@@ -75,8 +75,8 @@ public class CSVreadAndPrint {
 				.skip(1)
 				.map(x -> {
 					int rowInt = rowCount.intValue();
-					String rowString = Integer.toString(rowInt);
-					String modifiedRow = rowString + "."+ delimiter + x;
+					String rowCountString = Integer.toString(rowInt);
+					String modifiedRow = rowCountString + "."+ delimiter + x;
 					rowCount.addAndGet(1);
 					return modifiedRow;		})
 				.collect(Collectors.toList());
