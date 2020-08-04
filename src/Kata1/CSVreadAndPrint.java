@@ -41,7 +41,7 @@ public class CSVreadAndPrint {
 
 	private static List<String[]> separateHeader(List<String> unseparatedLines, String delimiter) {
 
-		List<String> manipulatedLines = manipulateHeader(unseparatedLines, delimiter);
+		List<String> manipulatedLines = addExtraColumnToHeader(unseparatedLines, delimiter);
 		List<String[]> separatedHeader = manipulatedLines
 				.stream()
 				.limit(1)
@@ -52,7 +52,7 @@ public class CSVreadAndPrint {
 	}
 
 	private static List<String[]> separateLinesWithoutHeader(List<String> unseparatedLines, String delimiter) {
-		List<String> manipulatedLines = manipulateLines(unseparatedLines, delimiter);
+		List<String> manipulatedLines = addCountingNumberToLines(unseparatedLines, delimiter);
 		List<String[]> separatedValuesPerLine = manipulatedLines
 				.stream()
 				.map(x -> x.split(delimiter))
@@ -60,7 +60,7 @@ public class CSVreadAndPrint {
 		return separatedValuesPerLine;
 	}
 
-	private static List<String> manipulateHeader(List<String> unseparatedLines, String delimiter) {
+	private static List<String> addExtraColumnToHeader(List<String> unseparatedLines, String delimiter) {
 		List<String> manipulatedHeader = unseparatedLines.stream()
 				.limit(1)
 				.map(x -> "No." + delimiter + x)
@@ -68,7 +68,7 @@ public class CSVreadAndPrint {
 		return manipulatedHeader;
 	}
 	
-	private static List<String> manipulateLines(List<String> unseparatedLines, String delimiter){
+	private static List<String> addCountingNumberToLines(List<String> unseparatedLines, String delimiter){
 		AtomicInteger row = new AtomicInteger(1);
 		List<String> manipulatedLines = unseparatedLines
 				.stream()
