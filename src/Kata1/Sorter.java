@@ -15,11 +15,6 @@ public class Sorter {
 		                return strings[indexToSortby].compareTo(otherStrings[indexToSortby]);
 		            }
 		       	});
-		 System.out.println("Test Test Test");
-		 System.out.println("Index zum Sortieren:" + indexToSortby);
-		 for (String[] sa : separatedLinesWithoutHeader) {
-	            System.out.println(Arrays.toString(sa));
-	            }		 
 		return separatedLinesWithoutHeader;
 	}
 
