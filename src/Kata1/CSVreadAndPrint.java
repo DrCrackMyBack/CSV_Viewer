@@ -3,8 +3,7 @@ package Kata1;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -24,20 +23,17 @@ public class CSVreadAndPrint {
 		List<String> unseparatedLines = readLines(filePath);
 		List<String[]> separatedHeader = separateHeader(unseparatedLines, delimiter);
 		List<String[]> separatedLinesWithoutHeader = separateLinesWithoutHeader(unseparatedLines, delimiter);
-		int[] widths = Widthsgetter.getWidthPerColoumn(separatedLinesWithoutHeader, separatedHeader);
+		int[] widths = getWidthPerColoumn(separatedLinesWithoutHeader, separatedHeader);
 		ConsoleOutput.print(separatedHeader,separatedLinesWithoutHeader, widths, numberOfOutputLines);
 	}
 
 	private static List<String> readLines(String filePath) {
-		try {
-			Stream<String> rows = Files.lines(Paths.get(filePath));
-			List<String> unseparatedLines = rows.collect(Collectors.toList());
-			rows.close();
-			return unseparatedLines;
+		try {			
+			return Files.lines(Paths.get(filePath)).collect(Collectors.toList());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new ArrayList<String>();
 	}
 
 	private static List<String[]> separateHeader(List<String> unseparatedLines, String delimiter) {
@@ -58,6 +54,26 @@ public class CSVreadAndPrint {
 				.map(x -> x.split(delimiter))
 				.collect(Collectors.toList());
 		return separatedValuesPerLine;
+	}
+	
+	private static int [] getWidthPerColoumn(List<String[]> separatedLinesWithoutHeader, List<String[]> separatedHeader) {
+		int widthsOfLinesWoHeader [] = new int [separatedLinesWithoutHeader.get(0).length];
+		//merge header and body to scan as a whole for the needed widths
+		separatedLinesWithoutHeader.add(separatedHeader.get(0)); 
+		
+		for (String[] array : separatedLinesWithoutHeader) {
+// TODO foreach
+			for (int index = 0; index < array.length; index++) {
+				
+				int width = array[index].length();				
+				if ( width > widthsOfLinesWoHeader[index]) {
+					widthsOfLinesWoHeader[index] = width;
+				}
+			}
+		}
+		//separate header and body again for further processing
+		separatedLinesWithoutHeader.remove(separatedLinesWithoutHeader.size()-1); 
+		return widthsOfLinesWoHeader;
 	}
 
 	private static List<String> manipulateHeader(List<String> unseparatedLines, String delimiter) {

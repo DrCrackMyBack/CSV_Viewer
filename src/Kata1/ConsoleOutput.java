@@ -32,8 +32,8 @@ public class ConsoleOutput {
 			currentPage.printPage(widths);
 			int numberOfPages = pages.size();
 			int currentPageNumber = currentPageIndex + 1;
-			String userInput = askUserForAction(currentPageNumber, numberOfPages);
-			userisJumpingToPage = numberOrNot(userInput);
+			String userInput = ConsoleInput.askUserForAction(currentPageNumber, numberOfPages);
+			userisJumpingToPage = ConsoleInput.numberOrNot(userInput);
 			
 			if (userInput.equals(NEXT_PAGE)) {
 				currentPageIndex++;
@@ -94,30 +94,5 @@ public class ConsoleOutput {
 			String headerFormatting = String.format("%" + (widths[coloumn] + 1) + "s", "+").replace(" ", "-");
 			System.out.print(headerFormatting);
 		}
-	}
-
-	private static String askUserForAction(int currentPage, int totalPages) {
-		System.out.println("");
-		System.out.println("Page "+ currentPage +" of " + totalPages);
-		System.out.println("N(ext page, P(revious page, F(irst page, L(ast page, J(ump to page, S)ort, eX(it");
-		BufferedReader userInputReader = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			String userInput = userInputReader.readLine();
-			return userInput;
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			// Logger.log(LoggingLevel.CRITICAL, e.getMessage());
-		}
-		return "";
-	}
-	
-	private static boolean numberOrNot(String userInput){
-	    try{
-	        Integer.parseInt(userInput);
-	    } catch(NumberFormatException ex) {
-	        return false;
-	    }
-	    return true;
 	}
 }
